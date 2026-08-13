@@ -1,0 +1,278 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="factory_premium_grand">
+    
+    <!-- Environment & Lighting -->
+    <include><uri>model://sun</uri></include>
+    <scene>
+      <ambient>0.7 0.7 0.7 1</ambient>
+      <background>0.9 0.95 1.0 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Polished Concrete Floor -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision"><geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry></collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material>
+            <ambient>0.45 0.47 0.5 1</ambient>
+            <diffuse>0.5 0.52 0.55 1</diffuse>
+            <specular>0.3 0.3 0.3 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- ================================================================= -->
+    <!-- GRAND BACK WALL & WINDOW ARCHITECTURE (With New Black Extensions) -->
+    <!-- ================================================================= -->
+    <model name="back_grand_wall">
+      <static>true</static>
+      <link name="link">
+        <!-- Center Windowed Wall -->
+        <visual name="bw"><pose>0 18 4.0 0 0 0</pose><geometry><box><size>14 0.5 8.0</size></box></geometry><material><ambient>0.9 0.9 0.9 1</ambient></material></visual>
+        <collision name="bwc"><pose>0 18 4.0 0 0 0</pose><geometry><box><size>14 0.5 8.0</size></box></geometry></collision>
+        
+        <visual name="win_l_trim"><pose>-5 17.9 3.5 0 0 0</pose><geometry><box><size>2.2 0.6 6.0</size></box></geometry><material><ambient>0.1 0.1 0.1 1</ambient></material></visual>
+        <visual name="win_l_glass"><pose>-5 17.8 3.5 0 0 0</pose><geometry><box><size>2.0 0.7 5.8</size></box></geometry><material><ambient>0.2 0.4 0.5 0.8</ambient></material></visual>
+          
+        <visual name="win_r_trim"><pose>5 17.9 3.5 0 0 0</pose><geometry><box><size>2.2 0.6 6.0</size></box></geometry><material><ambient>0.1 0.1 0.1 1</ambient></material></visual>
+        <visual name="win_r_glass"><pose>5 17.8 3.5 0 0 0</pose><geometry><box><size>2.0 0.7 5.8</size></box></geometry><material><ambient>0.2 0.4 0.5 0.8</ambient></material></visual>
+
+        <!-- NEW: Left Back Extension (Brick) from Black Lines -->
+        <visual name="bw_left_ext"><pose>-10.5 18 2.5 0 0 0</pose><geometry><box><size>7.0 0.4 5.0</size></box></geometry><material><ambient>0.6 0.3 0.2 1</ambient></material></visual>
+        <collision name="bw_left_ext_c"><pose>-10.5 18 2.5 0 0 0</pose><geometry><box><size>7.0 0.4 5.0</size></box></geometry></collision>
+        
+        <!-- NEW: Right Back Extension (Cream) from Black Lines -->
+        <visual name="bw_right_ext"><pose>10.5 18 2.5 0 0 0</pose><geometry><box><size>7.0 0.4 5.0</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+        <collision name="bw_right_ext_c"><pose>10.5 18 2.5 0 0 0</pose><geometry><box><size>7.0 0.4 5.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- ================================================================= -->
+    <!-- NEW: GRAND FRONT ENCLOSURE (Black Lines Across Front)             -->
+    <!-- ================================================================= -->
+    <model name="front_grand_wall">
+      <static>true</static>
+      <link name="link">
+        <!-- Left Front (Brick) -->
+        <visual name="fw_left"><pose>-8.5 -18 2.5 0 0 0</pose><geometry><box><size>11 0.4 5.0</size></box></geometry><material><ambient>0.6 0.3 0.2 1</ambient></material></visual>
+        <collision name="fw_left_c"><pose>-8.5 -18 2.5 0 0 0</pose><geometry><box><size>11 0.4 5.0</size></box></geometry></collision>
+        
+        <!-- Right Front (Cream) -->
+        <visual name="fw_right"><pose>8.5 -18 2.5 0 0 0</pose><geometry><box><size>11 0.4 5.0</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+        <collision name="fw_right_c"><pose>8.5 -18 2.5 0 0 0</pose><geometry><box><size>11 0.4 5.0</size></box></geometry></collision>
+        
+        <!-- Center Glass Entrance (To keep it premium) -->
+        <visual name="fw_glass"><pose>0 -18 2.5 0 0 0</pose><geometry><box><size>6 0.2 5.0</size></box></geometry><material><ambient>0.2 0.4 0.5 0.5</ambient></material></visual>
+        <collision name="fw_glass_c"><pose>0 -18 2.5 0 0 0</pose><geometry><box><size>6 0.2 5.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- ================================================================= -->
+    <!-- LEFT WING (ROOMS 1, 2, 3) - BRICK EXTERIOR                        -->
+    <!-- ================================================================= -->
+    <model name="left_wing">
+      <static>true</static>
+      <link name="walls">
+        <collision name="lw_out"><pose>-14 0 2.5 0 0 0</pose><geometry><box><size>0.4 36 5.0</size></box></geometry></collision>
+        <visual name="lw_out_v"><pose>-14 0 2.5 0 0 0</pose><geometry><box><size>0.4 36 5.0</size></box></geometry><material><ambient>0.6 0.3 0.2 1</ambient></material></visual>
+
+        <!-- Front Facade Facing Hall -->
+        <!-- NEW: Gray lines added a Doorway & Gray Door to Room 1 -->
+        <visual name="f1_a"><pose>-7 -16.5 2.5 0 0 0</pose><geometry><box><size>0.4 3.0 5.0</size></box></geometry><material><ambient>0.6 0.3 0.2 1</ambient></material></visual>
+        <collision name="f1_a_c"><pose>-7 -16.5 2.5 0 0 0</pose><geometry><box><size>0.4 3.0 5.0</size></box></geometry></collision>
+        
+        <visual name="f1_b"><pose>-7 -9.5 2.5 0 0 0</pose><geometry><box><size>0.4 7.0 5.0</size></box></geometry><material><ambient>0.6 0.3 0.2 1</ambient></material></visual>
+        <collision name="f1_b_c"><pose>-7 -9.5 2.5 0 0 0</pose><geometry><box><size>0.4 7.0 5.0</size></box></geometry></collision>
+        
+        <visual name="dh_new_left"><pose>-7 -14 4.0 0 0 0</pose><geometry><box><size>0.4 2.0 2.0</size></box></geometry><material><ambient>0.2 0.2 0.2 1</ambient></material></visual>
+        
+        <!-- The Open Gray Door -->
+        <visual name="door_left"><pose>-6.0 -14.8 1.5 0 0 0.8</pose><geometry><box><size>0.1 2.0 3.0</size></box></geometry><material><ambient>0.4 0.4 0.4 1</ambient></material></visual>
+        <collision name="door_left_c"><pose>-6.0 -14.8 1.5 0 0 0.8</pose><geometry><box><size>0.1 2.0 3.0</size></box></geometry></collision>
+
+        <visual name="f2"><pose>-7 0 2.5 0 0 0</pose><geometry><box><size>0.4 8 5.0</size></box></geometry><material><ambient>0.7 0.7 0.7 1</ambient></material></visual>
+        <collision name="f2_c"><pose>-7 0 2.5 0 0 0</pose><geometry><box><size>0.4 8 5.0</size></box></geometry></collision>
+        <visual name="f3"><pose>-7 12 2.5 0 0 0</pose><geometry><box><size>0.4 8 5.0</size></box></geometry><material><ambient>0.6 0.3 0.2 1</ambient></material></visual>
+        <collision name="f3_c"><pose>-7 12 2.5 0 0 0</pose><geometry><box><size>0.4 8 5.0</size></box></geometry></collision>
+        
+        <visual name="dh1"><pose>-7 -5 4.0 0 0 0</pose><geometry><box><size>0.4 2 2.0</size></box></geometry><material><ambient>0.2 0.2 0.2 1</ambient></material></visual>
+        <visual name="dh2"><pose>-7 5 4.0 0 0 0</pose><geometry><box><size>0.4 2 2.0</size></box></geometry><material><ambient>0.2 0.2 0.2 1</ambient></material></visual>
+        <visual name="dh3"><pose>-7 17 4.0 0 0 0</pose><geometry><box><size>0.4 2 2.0</size></box></geometry><material><ambient>0.2 0.2 0.2 1</ambient></material></visual>
+
+        <visual name="div1"><pose>-10.5 -6 2.5 0 0 0</pose><geometry><box><size>7.0 0.3 5.0</size></box></geometry><material><ambient>0.7 0.7 0.7 1</ambient></material></visual>
+        <collision name="div1_c"><pose>-10.5 -6 2.5 0 0 0</pose><geometry><box><size>7.0 0.3 5.0</size></box></geometry></collision>
+        <visual name="div2"><pose>-10.5 6 2.5 0 0 0</pose><geometry><box><size>7.0 0.3 5.0</size></box></geometry><material><ambient>0.7 0.7 0.7 1</ambient></material></visual>
+        <collision name="div2_c"><pose>-10.5 6 2.5 0 0 0</pose><geometry><box><size>7.0 0.3 5.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- LEFT WING FURNITURE -->
+    <model name="left_furniture">
+      <static>true</static>
+      <link name="link">
+        <visual name="r1_shelf"><pose>-13 -12 1.5 0 0 0</pose><geometry><box><size>1.0 10 3.0</size></box></geometry><material><ambient>0.2 0.2 0.2 1</ambient></material></visual>
+        <collision name="r1_shelf_c"><pose>-13 -12 1.5 0 0 0</pose><geometry><box><size>1.0 10 3.0</size></box></geometry></collision>
+        <visual name="r2_bench"><pose>-10 0 0.5 0 0 0</pose><geometry><box><size>2.0 4.0 1.0</size></box></geometry><material><ambient>0.4 0.3 0.2 1</ambient></material></visual>
+        <collision name="r2_bench_c"><pose>-10 0 0.5 0 0 0</pose><geometry><box><size>2.0 4.0 1.0</size></box></geometry></collision>
+        <visual name="r3_shelf"><pose>-13 12 1.5 0 0 0</pose><geometry><box><size>1.0 8 3.0</size></box></geometry><material><ambient>0.5 0.3 0.1 1</ambient></material></visual>
+        <collision name="r3_shelf_c"><pose>-13 12 1.5 0 0 0</pose><geometry><box><size>1.0 8 3.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- ================================================================= -->
+    <!-- RIGHT WING (ROOMS 4, 5 & COUNTER) - CREAM & DARK TRIM             -->
+    <!-- ================================================================= -->
+    <model name="right_wing">
+      <static>true</static>
+      <link name="walls">
+        <collision name="rw_out"><pose>14 0 2.5 0 0 0</pose><geometry><box><size>0.4 36 5.0</size></box></geometry></collision>
+        <visual name="rw_out_v"><pose>14 0 2.5 0 0 0</pose><geometry><box><size>0.4 36 5.0</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+
+        <!-- Front Facade Facing Hall -->
+        <!-- NEW: Gray lines added a Doorway & Gray Door to Room 5 -->
+        <visual name="rf1_a"><pose>7 -16.5 2.5 0 0 0</pose><geometry><box><size>0.4 3.0 5.0</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+        <collision name="rf1_a_c"><pose>7 -16.5 2.5 0 0 0</pose><geometry><box><size>0.4 3.0 5.0</size></box></geometry></collision>
+        
+        <visual name="rf1_b"><pose>7 -9.5 2.5 0 0 0</pose><geometry><box><size>0.4 7.0 5.0</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+        <collision name="rf1_b_c"><pose>7 -9.5 2.5 0 0 0</pose><geometry><box><size>0.4 7.0 5.0</size></box></geometry></collision>
+        
+        <visual name="dh_new_right"><pose>7 -14 4.0 0 0 0</pose><geometry><box><size>0.4 2.0 2.0</size></box></geometry><material><ambient>0.1 0.1 0.1 1</ambient></material></visual>
+        
+        <!-- The Open Gray Door -->
+        <visual name="door_right"><pose>6.0 -14.8 1.5 0 0 -0.8</pose><geometry><box><size>0.1 2.0 3.0</size></box></geometry><material><ambient>0.4 0.4 0.4 1</ambient></material></visual>
+        <collision name="door_right_c"><pose>6.0 -14.8 1.5 0 0 -0.8</pose><geometry><box><size>0.1 2.0 3.0</size></box></geometry></collision>
+
+        <visual name="rf2"><pose>7 0 2.5 0 0 0</pose><geometry><box><size>0.4 8 5.0</size></box></geometry><material><ambient>0.2 0.15 0.12 1</ambient></material></visual>
+        <collision name="rf2_c"><pose>7 0 2.5 0 0 0</pose><geometry><box><size>0.4 8 5.0</size></box></geometry></collision>
+        <visual name="rf3"><pose>7 12 2.5 0 0 0</pose><geometry><box><size>0.4 8 5.0</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+        <collision name="rf3_c"><pose>7 12 2.5 0 0 0</pose><geometry><box><size>0.4 8 5.0</size></box></geometry></collision>
+
+        <visual name="rdh1"><pose>7 -5 4.0 0 0 0</pose><geometry><box><size>0.4 2 2.0</size></box></geometry><material><ambient>0.1 0.1 0.1 1</ambient></material></visual>
+        <visual name="rdh2"><pose>7 5 4.0 0 0 0</pose><geometry><box><size>0.4 2 2.0</size></box></geometry><material><ambient>0.1 0.1 0.1 1</ambient></material></visual>
+        
+        <visual name="rdiv1"><pose>10.5 -6 2.5 0 0 0</pose><geometry><box><size>7.0 0.3 5.0</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+        <collision name="rdiv1_c"><pose>10.5 -6 2.5 0 0 0</pose><geometry><box><size>7.0 0.3 5.0</size></box></geometry></collision>
+        <visual name="rdiv2"><pose>10.5 6 2.5 0 0 0</pose><geometry><box><size>7.0 0.3 5.0</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+        <collision name="rdiv2_c"><pose>10.5 6 2.5 0 0 0</pose><geometry><box><size>7.0 0.3 5.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- RIGHT WING FURNITURE -->
+    <model name="right_furniture">
+      <static>true</static>
+      <link name="link">
+        <visual name="r5_shelf"><pose>13 -12 1.5 0 0 0</pose><geometry><box><size>1.0 10 3.0</size></box></geometry><material><ambient>0.9 0.9 0.9 1</ambient></material></visual>
+        <collision name="r5_shelf_c"><pose>13 -12 1.5 0 0 0</pose><geometry><box><size>1.0 10 3.0</size></box></geometry></collision>
+        <visual name="r5_c1"><pose>12.5 -14 0.5 0 0 0</pose><geometry><cylinder><radius>0.2</radius><length>0.6</length></cylinder></geometry><material><ambient>0.8 0.2 0.2 1</ambient></material></visual>
+        <visual name="r5_c2"><pose>12.5 -12 1.5 0 0 0</pose><geometry><cylinder><radius>0.2</radius><length>0.6</length></cylinder></geometry><material><ambient>0.2 0.6 0.8 1</ambient></material></visual>
+
+        <!-- PREMIUM COUNTER -->
+        <collision name="counter_c"><pose>9 0 0.6 0 0 0</pose><geometry><box><size>3.0 10 1.2</size></box></geometry></collision>
+        <visual name="counter_base"><pose>9 0 0.5 0 0 0</pose><geometry><box><size>2.0 10 1.0</size></box></geometry><material><ambient>0.2 0.15 0.12 1</ambient></material></visual>
+        <visual name="counter_top"><pose>8.5 0 1.05 0 0 0</pose><geometry><box><size>3.0 10.2 0.1</size></box></geometry><material><ambient>0.8 0.8 0.8 1</ambient></material></visual>
+        <visual name="counter_back"><pose>13.5 0 2.0 0 0 0</pose><geometry><box><size>0.6 10 4.0</size></box></geometry><material><ambient>0.2 0.15 0.12 1</ambient></material></visual>
+        
+        <visual name="r4_shelf"><pose>13 12 1.5 0 0 0</pose><geometry><box><size>1.0 8 3.0</size></box></geometry><material><ambient>0.9 0.9 0.9 1</ambient></material></visual>
+        <collision name="r4_shelf_c"><pose>13 12 1.5 0 0 0</pose><geometry><box><size>1.0 8 3.0</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- ================================================================= -->
+    <!-- CENTER LOUNGE (MASSIVE RUG, BLUE & BROWN SOFAS)                   -->
+    <!-- ================================================================= -->
+    <model name="center_lounge">
+      <static>true</static>
+      <link name="link">
+        <visual name="main_rug"><pose>0 -3 0.01 0 0 0</pose><geometry><box><size>10 12 0.02</size></box></geometry>
+          <material><ambient>0.7 0.3 0.15 1</ambient><diffuse>0.8 0.4 0.2 1</diffuse></material></visual>
+
+        <collision name="blue_sofa_c"><pose>-3 -3 0.5 0 0 0</pose><geometry><box><size>1.4 6.0 1.0</size></box></geometry></collision>
+        <visual name="blue_seat"><pose>-2.8 -3 0.25 0 0 0</pose><geometry><box><size>1.0 6.0 0.5</size></box></geometry>
+          <material><ambient>0.1 0.25 0.6 1</ambient><diffuse>0.15 0.35 0.8 1</diffuse></material></visual>
+        <visual name="blue_back"><pose>-3.5 -3 0.65 0 0 0</pose><geometry><box><size>0.4 6.0 0.9</size></box></geometry>
+          <material><ambient>0.1 0.25 0.6 1</ambient><diffuse>0.15 0.35 0.8 1</diffuse></material></visual>
+
+        <collision name="brown_sofa_c"><pose>0 1.5 0.5 0 0 0</pose><geometry><box><size>5.0 1.4 1.0</size></box></geometry></collision>
+        <visual name="brown_seat"><pose>0 1.2 0.25 0 0 0</pose><geometry><box><size>5.0 1.0 0.5</size></box></geometry>
+          <material><ambient>0.5 0.25 0.1 1</ambient><diffuse>0.6 0.35 0.15 1</diffuse></material></visual>
+        <visual name="brown_back"><pose>0 1.8 0.65 0 0 0</pose><geometry><box><size>5.0 0.4 0.9</size></box></geometry>
+          <material><ambient>0.5 0.25 0.1 1</ambient><diffuse>0.6 0.35 0.15 1</diffuse></material></visual>
+
+        <!-- Wood armchairs -->
+        <collision name="chair1_c"><pose>3 -1.5 0.4 0 0 0</pose><geometry><box><size>1.2 1.2 0.9</size></box></geometry></collision>
+        <visual name="c1_frame"><pose>3 -1.5 0.25 0 0 0</pose><geometry><box><size>1.2 1.2 0.5</size></box></geometry><material><ambient>0.3 0.15 0.05 1</ambient></material></visual>
+        <visual name="c1_cushion"><pose>2.8 -1.5 0.55 0 0 0</pose><geometry><box><size>0.8 1.0 0.2</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+        
+        <collision name="chair2_c"><pose>3 -4.5 0.4 0 0 0</pose><geometry><box><size>1.2 1.2 0.9</size></box></geometry></collision>
+        <visual name="c2_frame"><pose>3 -4.5 0.25 0 0 0</pose><geometry><box><size>1.2 1.2 0.5</size></box></geometry><material><ambient>0.3 0.15 0.05 1</ambient></material></visual>
+        <visual name="c2_cushion"><pose>2.8 -4.5 0.55 0 0 0</pose><geometry><box><size>0.8 1.0 0.2</size></box></geometry><material><ambient>0.9 0.9 0.85 1</ambient></material></visual>
+
+        <collision name="coffee_c"><pose>0 -3 0.35 0 0 0</pose><geometry><box><size>2.5 4.0 0.7</size></box></geometry></collision>
+        <visual name="coffee_top"><pose>0 -3 0.3 0 0 0</pose><geometry><box><size>2.5 4.0 0.1</size></box></geometry><material><ambient>0.6 0.4 0.2 1</ambient></material></visual>
+        <visual name="coffee_base"><pose>0 -3 0.15 0 0 0</pose><geometry><box><size>2.0 3.5 0.3</size></box></geometry><material><ambient>0.2 0.1 0.05 1</ambient></material></visual>
+      </link>
+    </model>
+
+    <!-- ================================================================= -->
+    <!-- USER CUSTOM ADDITIONS (RED BOXES, GREEN CHAIRS, YELLOW LAMPS)     -->
+    <!-- ================================================================= -->
+    <model name="user_custom_objects">
+      <static>true</static>
+      <link name="link">
+        
+        <!-- RED CIRCLES: Medium Boxes -->
+        <visual name="rb1_v"><pose>-10 -14 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry><material><ambient>0.8 0.2 0.2 1</ambient></material></visual>
+        <collision name="rb1_c"><pose>-10 -14 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry></collision>
+
+        <visual name="rb2_v"><pose>-11 2 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry><material><ambient>0.8 0.2 0.2 1</ambient></material></visual>
+        <collision name="rb2_c"><pose>-11 2 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry></collision>
+
+        <visual name="rb3_v"><pose>-9 10 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry><material><ambient>0.8 0.2 0.2 1</ambient></material></visual>
+        <collision name="rb3_c"><pose>-9 10 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry></collision>
+
+        <visual name="rb4_v"><pose>11 -13 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry><material><ambient>0.8 0.2 0.2 1</ambient></material></visual>
+        <collision name="rb4_c"><pose>11 -13 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry></collision>
+
+        <visual name="rb5_v"><pose>12 3 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry><material><ambient>0.8 0.2 0.2 1</ambient></material></visual>
+        <collision name="rb5_c"><pose>12 3 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry></collision>
+
+        <visual name="rb6_v"><pose>11 11 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry><material><ambient>0.8 0.2 0.2 1</ambient></material></visual>
+        <collision name="rb6_c"><pose>11 11 0.4 0 0 0</pose><geometry><box><size>0.8 0.8 0.8</size></box></geometry></collision>
+
+        <!-- GREEN CIRCLES: Chairs (Seat and Backrest) -->
+        <visual name="gc1_seat"><pose>6 -2 0.2 0 0 0</pose><geometry><box><size>0.6 0.6 0.4</size></box></geometry><material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
+        <visual name="gc1_back"><pose>6 -2.25 0.6 0 0 0</pose><geometry><box><size>0.6 0.1 0.5</size></box></geometry><material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
+        <collision name="gc1_c"><pose>6 -2 0.4 0 0 0</pose><geometry><box><size>0.6 0.6 0.8</size></box></geometry></collision>
+
+        <visual name="gc2_seat"><pose>-2 -7 0.2 0 0 0</pose><geometry><box><size>0.6 0.6 0.4</size></box></geometry><material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
+        <visual name="gc2_back"><pose>-2 -7.25 0.6 0 0 0</pose><geometry><box><size>0.6 0.1 0.5</size></box></geometry><material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
+        <collision name="gc2_c"><pose>-2 -7 0.4 0 0 0</pose><geometry><box><size>0.6 0.6 0.8</size></box></geometry></collision>
+
+        <visual name="gc3_seat"><pose>-6 -1 0.2 0 0 0</pose><geometry><box><size>0.6 0.6 0.4</size></box></geometry><material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
+        <visual name="gc3_back"><pose>-6 -1.25 0.6 0 0 0</pose><geometry><box><size>0.6 0.1 0.5</size></box></geometry><material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
+        <collision name="gc3_c"><pose>-6 -1 0.4 0 0 0</pose><geometry><box><size>0.6 0.6 0.8</size></box></geometry></collision>
+
+        <visual name="gc4_seat"><pose>3 6 0.2 0 0 0</pose><geometry><box><size>0.6 0.6 0.4</size></box></geometry><material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
+        <visual name="gc4_back"><pose>3 5.75 0.6 0 0 0</pose><geometry><box><size>0.6 0.1 0.5</size></box></geometry><material><ambient>0.1 0.8 0.1 1</ambient></material></visual>
+        <collision name="gc4_c"><pose>3 6 0.4 0 0 0</pose><geometry><box><size>0.6 0.6 0.8</size></box></geometry></collision>
+
+        <!-- YELLOW CIRCLES: Lamp Tables (Decorative Cylinders) -->
+        <visual name="yt1_v"><pose>-5 -12 0.35 0 0 0</pose><geometry><cylinder><radius>0.3</radius><length>0.7</length></cylinder></geometry><material><ambient>0.9 0.8 0.1 1</ambient></material></visual>
+        <collision name="yt1_c"><pose>-5 -12 0.35 0 0 0</pose><geometry><cylinder><radius>0.3</radius><length>0.7</length></cylinder></geometry></collision>
+
+        <visual name="yt2_v"><pose>-2 1 0.35 0 0 0</pose><geometry><cylinder><radius>0.3</radius><length>0.7</length></cylinder></geometry><material><ambient>0.9 0.8 0.1 1</ambient></material></visual>
+        <collision name="yt2_c"><pose>-2 1 0.35 0 0 0</pose><geometry><cylinder><radius>0.3</radius><length>0.7</length></cylinder></geometry></collision>
+
+        <visual name="yt3_v"><pose>3 -2 0.35 0 0 0</pose><geometry><cylinder><radius>0.3</radius><length>0.7</length></cylinder></geometry><material><ambient>0.9 0.8 0.1 1</ambient></material></visual>
+        <collision name="yt3_c"><pose>3 -2 0.35 0 0 0</pose><geometry><cylinder><radius>0.3</radius><length>0.7</length></cylinder></geometry></collision>
+
+      </link>
+    </model>
+
+  </world>
+</sdf>

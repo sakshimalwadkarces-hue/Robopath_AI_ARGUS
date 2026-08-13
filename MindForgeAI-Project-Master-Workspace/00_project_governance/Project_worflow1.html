@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboPath AI | Master Project Overview</title>
+    <style>
+        /* ==========================================================================
+           1. ROOT VARIABLES & THEME
+           ========================================================================== */
+        :root {
+            /* Color Palette */
+            --bg-base: #030712;
+            --bg-surface: rgba(17, 24, 39, 0.6);
+            --primary-cyan: #00f0ff;
+            --primary-blue: #0047ff;
+            --primary-purple: #8a2be2;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+
+            /* Glassmorphism */
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --glass-blur: blur(12px);
+
+            /* Typography */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+            
+            /* Spacing & Transitions */
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: all 0.2s ease;
+        }
+
+        /* ==========================================================================
+           2. GLOBAL RESETS & UTILITIES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 71, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(138, 43, 226, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        ::selection {
+            background: var(--primary-cyan);
+            color: #000;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-cyan); }
+
+        /* Typography Utilities */
+        h1, h2, h3, h4, h5, h6 { line-height: 1.2; font-weight: 700; }
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .mono-text { font-family: var(--font-mono); font-size: 0.9em; }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 5%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .section-header h2 {
+            font-size: 3rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--glass-shadow);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0; transition: var(--transition-smooth);
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 10px 40px -10px rgba(0, 240, 255, 0.2);
+        }
+        .glass-card:hover::before { opacity: 1; }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600;
+            text-decoration: none; transition: var(--transition-smooth);
+            cursor: pointer; border: none; font-size: 1rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: #fff; box-shadow: 0 4px 15px rgba(0, 71, 255, 0.4);
+            position: relative; overflow: hidden;
+        }
+        .btn-primary::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.3s; transform: scale(0.5);
+        }
+        .btn-primary:hover::after { opacity: 1; transform: scale(1); }
+        .btn-primary:hover { box-shadow: 0 6px 25px rgba(138, 43, 226, 0.6); transform: scale(1.02); }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05); color: var(--text-main);
+            border: 1px solid var(--glass-border); backdrop-filter: blur(5px);
+        }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--primary-cyan); color: var(--primary-cyan); }
+
+        /* Grids */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+
+        /* ==========================================================================
+           3. NAVBAR & PROGRESS
+           ========================================================================== */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center;
+            transition: var(--transition-smooth);
+        }
+        .nav-logo { font-size: 1.5rem; font-weight: 800; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.9rem;
+            transition: var(--transition-fast);
+        }
+        .nav-links a:hover { color: var(--primary-cyan); text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+        
+        #progress-bar {
+            position: absolute; bottom: -1px; left: 0; height: 2px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple));
+            width: 0%; z-index: 1001;
+        }
+
+        /* ==========================================================================
+           4. HERO SECTION
+           ========================================================================== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden; padding-top: 80px;
+        }
+        .hero-content {
+            text-align: center; z-index: 2; max-width: 900px; padding: 0 20px;
+        }
+        .hero-title { font-size: 5rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.1; letter-spacing: -2px; }
+        .hero-subtitle { font-size: 1.8rem; color: var(--text-muted); margin-bottom: 2rem; height: 40px; }
+        .hero-desc { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 3rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .hero-buttons { display: flex; gap: 1.5rem; justify-content: center; margin-bottom: 4rem; }
+        
+        /* Animated SVG Robot */
+        .hero-robot { width: 300px; height: 300px; margin: 0 auto; filter: drop-shadow(0 0 20px rgba(0,240,255,0.3)); }
+        .robot-eye { animation: blink 4s infinite; transform-origin: center; }
+        .robot-float { animation: float 6s ease-in-out infinite; }
+        .robot-pulse { animation: pulseGlow 3s infinite; }
+
+        @keyframes blink { 0%, 96%, 98% { transform: scaleY(1); } 97% { transform: scaleY(0.1); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes pulseGlow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; filter: drop-shadow(0 0 15px var(--primary-cyan)); } }
+
+        .scroll-indicator {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: 0.6;
+        }
+        .mouse { width: 30px; height: 50px; border: 2px solid var(--text-muted); border-radius: 15px; position: relative; }
+        .wheel { width: 4px; height: 8px; background: var(--primary-cyan); border-radius: 2px; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); animation: scroll 2s infinite; }
+        @keyframes scroll { 0% { top: 10px; opacity: 1; } 100% { top: 30px; opacity: 0; } }
+
+        /* ==========================================================================
+           5. OVERVIEW SECTION
+           ========================================================================== */
+        .overview-card h3 { color: var(--primary-cyan); margin-bottom: 1rem; font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        .overview-card ul { list-style: none; margin-top: 1rem; }
+        .overview-card li { margin-bottom: 0.5rem; padding-left: 20px; position: relative; color: var(--text-muted); }
+        .overview-card li::before { content: '▹'; position: absolute; left: 0; color: var(--primary-purple); }
+
+        /* ==========================================================================
+           6. WORKFLOW TIMELINE
+           ========================================================================== */
+        .timeline { position: relative; max-width: 1000px; margin: 0 auto; padding: 2rem 0; }
+        .timeline::before {
+            content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+            background: linear-gradient(to bottom, var(--primary-cyan), var(--primary-purple));
+            transform: translateX(-50%);
+        }
+        .timeline-item { margin-bottom: 2rem; position: relative; width: 50%; padding: 0 40px; cursor: pointer; }
+        .timeline-item:nth-child(odd) { left: 0; text-align: right; }
+        .timeline-item:nth-child(even) { left: 50%; text-align: left; }
+        
+        /* The dot */
+        .timeline-item::after {
+            content: ''; position: absolute; top: 30px; width: 20px; height: 20px;
+            background: var(--bg-base); border: 3px solid var(--primary-cyan);
+            border-radius: 50%; z-index: 1; transition: var(--transition-fast);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        .timeline-item:nth-child(odd)::after { right: -10px; }
+        .timeline-item:nth-child(even)::after { left: -10px; }
+        .timeline-item:hover::after { background: var(--primary-cyan); transform: scale(1.2); }
+
+        .timeline-content {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            border-radius: 12px; padding: 1.5rem; backdrop-filter: var(--glass-blur);
+            transition: var(--transition-smooth);
+        }
+        .timeline-item:hover .timeline-content { border-color: var(--primary-cyan); background: rgba(255,255,255,0.06); }
+        .phase-number { font-family: var(--font-mono); color: var(--primary-purple); font-size: 0.9rem; margin-bottom: 0.5rem; display: block; }
+        .timeline-content h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        
+        /* Expandable details */
+        .timeline-details {
+            max-height: 0; overflow: hidden; opacity: 0; transition: all 0.5s ease;
+            text-align: left; margin-top: 1rem; border-top: 1px solid var(--glass-border); padding-top: 1rem;
+        }
+        .timeline-item.active .timeline-details { max-height: 500px; opacity: 1; }
+        .timeline-details p { margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted); }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; background: rgba(0, 240, 255, 0.1); color: var(--primary-cyan); font-family: var(--font-mono); font-size: 0.75rem; margin-right: 5px; margin-bottom: 5px; border: 1px solid rgba(0, 240, 255, 0.2); }
+
+        /* ==========================================================================
+           7. ARCHITECTURE SVG DIAGRAM (CSS Grid + Interactive Nodes)
+           ========================================================================== */
+        .architecture-container {
+            position: relative; background: rgba(0,0,0,0.3); border-radius: 20px;
+            padding: 4rem 2rem; border: 1px solid var(--glass-border);
+            overflow: hidden; min-height: 800px;
+        }
+        /* Background Grid */
+        .architecture-container::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 30px 30px; z-index: 0; pointer-events: none;
+        }
+        
+        .arch-layout { display: flex; flex-direction: column; align-items: center; gap: 30px; position: relative; z-index: 1; }
+        
+        .arch-row { display: flex; gap: 40px; justify-content: center; align-items: center; flex-wrap: wrap; }
+        
+        .arch-node {
+            background: var(--glass-bg); border: 1px solid var(--primary-blue);
+            padding: 15px 25px; border-radius: 8px; font-family: var(--font-mono);
+            font-size: 0.9rem; cursor: pointer; position: relative;
+            box-shadow: 0 0 15px rgba(0, 71, 255, 0.2); transition: var(--transition-fast);
+            text-align: center; min-width: 150px;
+        }
+        .arch-node:hover { transform: scale(1.05); border-color: var(--primary-cyan); box-shadow: 0 0 25px rgba(0, 240, 255, 0.4); background: rgba(0, 240, 255, 0.1); }
+        .arch-node.highlight { border-color: var(--primary-purple); box-shadow: 0 0 20px rgba(138, 43, 226, 0.4); }
+        
+        .arch-arrow-down { color: var(--primary-cyan); font-size: 1.5rem; animation: pulseGlow 2s infinite; }
+        
+        /* Tooltip */
+        #arch-tooltip {
+            position: absolute; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(10px);
+            border: 1px solid var(--primary-cyan); border-radius: 8px; padding: 15px; width: 300px;
+            pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); color: #fff;
+        }
+        #arch-tooltip h4 { color: var(--primary-cyan); margin-bottom: 5px; font-family: var(--font-mono); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+        #arch-tooltip p { font-size: 0.85rem; color: var(--text-muted); }
+
+        /* ==========================================================================
+           8. TECH STACK
+           ========================================================================== */
+        .tech-card {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            padding: 2rem 1rem; border-radius: 12px; background: rgba(255,255,255,0.02);
+            border: 1px solid var(--glass-border); transition: var(--transition-smooth);
+        }
+        .tech-card:hover { background: rgba(255,255,255,0.05); border-color: var(--text-muted); transform: translateY(-5px); }
+        .tech-icon { font-size: 2.5rem; margin-bottom: 1rem; color: var(--text-main); }
+        .tech-card h4 { margin-bottom: 0.5rem; }
+        .tech-card p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* ==========================================================================
+           9. INNOVATIONS
+           ========================================================================== */
+        .innovation-card { margin-bottom: 3rem; display: flex; flex-direction: column; gap: 2rem; }
+        @media (min-width: 768px) { .innovation-card { flex-direction: row; align-items: center; } .innovation-card:nth-child(even) { flex-direction: row-reverse; } }
+        .innovation-content { flex: 1; }
+        .innovation-visual { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 12px; height: 300px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        
+        .innovation-content h3 { font-size: 2rem; margin-bottom: 1rem; }
+        .badge { display: inline-block; padding: 4px 12px; background: rgba(138,43,226,0.2); color: var(--primary-purple); border-radius: 20px; font-size: 0.8rem; font-weight: bold; margin-bottom: 1rem; border: 1px solid rgba(138,43,226,0.5); }
+        
+        /* CSS Animations for innovation visuals */
+        .pulse-ring { width: 100px; height: 100px; border-radius: 50%; background: var(--primary-cyan); position: absolute; opacity: 0; animation: expandRing 3s infinite; }
+        @keyframes expandRing { 0% { transform: scale(0.1); opacity: 0.8; } 100% { transform: scale(3); opacity: 0; } }
+
+        /* ==========================================================================
+           10. BEHAVIOR TREE & DATA FLOW
+           ========================================================================== */
+        .flow-container { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 2rem; overflow-x: auto; white-space: nowrap; text-align: center; margin-bottom: 2rem; border: 1px solid var(--glass-border); }
+        .flow-box { display: inline-block; padding: 10px 20px; background: var(--glass-bg); border: 1px solid var(--primary-blue); border-radius: 6px; font-family: var(--font-mono); font-size: 0.9rem; }
+        .flow-arrow { display: inline-block; margin: 0 15px; color: var(--text-muted); font-size: 1.2rem; vertical-align: middle; }
+        
+        /* Behavior Tree CSS */
+        .btree { display: flex; flex-direction: column; align-items: center; font-family: var(--font-mono); }
+        .btree-node { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); padding: 10px 20px; border-radius: 6px; position: relative; margin: 10px 0; z-index: 2; }
+        .btree-split { display: flex; justify-content: center; gap: 40px; position: relative; padding-top: 20px; }
+        .btree-split::before { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 1px; background: var(--text-muted); z-index: 1; }
+        .btree-branch { display: flex; flex-direction: column; align-items: center; position: relative; }
+        .btree-branch::before { content: ''; position: absolute; top: -20px; left: 50%; width: 1px; height: 20px; background: var(--text-muted); z-index: 1; }
+        .btree-label { font-size: 0.75rem; color: var(--warning); margin-bottom: 5px; background: var(--bg-base); padding: 0 5px; z-index: 2; }
+        .node-danger { border-color: var(--danger); color: var(--danger); }
+        .node-success { border-color: var(--success); color: var(--success); }
+
+        /* ==========================================================================
+           11. DASHBOARD PREVIEW
+           ========================================================================== */
+        .dashboard-ui { background: #0a0a0a; border: 1px solid #333; border-radius: 16px; overflow: hidden; font-family: var(--font-mono); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+        .dash-header { background: #111; padding: 15px 20px; display: flex; justify-content: space-between; border-bottom: 1px solid #333; }
+        .dash-status { color: var(--success); display: flex; align-items: center; gap: 8px; }
+        .dash-dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: blink 1s infinite; }
+        
+        .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1px; background: #333; }
+        .dash-panel { background: #0a0a0a; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .panel-title { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        
+        /* Camera Feed Simulation */
+        .cam-feed { height: 300px; background: #050505; position: relative; border-radius: 8px; overflow: hidden; border: 1px solid #222; }
+        .cam-feed::after { content: ''; position: absolute; top:0;left:0;right:0;bottom:0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,240,255,0.05) 2px, rgba(0,240,255,0.05) 4px); pointer-events: none; }
+        .bbox { position: absolute; border: 2px solid var(--warning); top: 30%; left: 40%; width: 20%; height: 50%; }
+        .bbox-label { position: absolute; top: -20px; left: -2px; background: var(--warning); color: #000; font-size: 0.7rem; padding: 2px 5px; }
+        
+        /* Map Simulation */
+        .map-view { height: 200px; background: #000; border: 1px dashed #444; position: relative; display: flex; align-items: center; justify-content: center; }
+        .map-grid { position: absolute; width: 100%; height: 100%; background-image: linear-gradient(#111 1px, transparent 1px), linear-gradient(90deg, #111 1px, transparent 1px); background-size: 20px 20px; }
+        .robot-marker { width: 12px; height: 12px; background: var(--primary-cyan); border-radius: 50%; box-shadow: 0 0 10px var(--primary-cyan); position: relative; z-index: 2; }
+        .path-line { position: absolute; width: 100px; height: 2px; background: var(--success); top: 50%; left: 50%; transform-origin: left; transform: rotate(-20deg); z-index: 1; }
+        
+        /* Telemetry Stats */
+        .stat-row { display: flex; justify-content: space-between; font-size: 0.9rem; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
+        .stat-val { color: var(--primary-cyan); }
+        .log-window { height: 120px; background: #050505; border: 1px solid #222; border-radius: 4px; padding: 10px; font-size: 0.75rem; overflow-y: auto; color: #aaa; }
+        .log-entry { margin-bottom: 4px; }
+        .log-info { color: var(--primary-blue); }
+        .log-warn { color: var(--warning); }
+        
+        /* ==========================================================================
+           12. ROADMAP & SUMMARY
+           ========================================================================== */
+        .roadmap-container { display: flex; flex-direction: column; gap: 1rem; }
+        .roadmap-item { display: flex; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 8px; overflow: hidden; }
+        .roadmap-week { background: rgba(0, 240, 255, 0.1); padding: 1.5rem; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 120px; color: var(--primary-cyan); border-right: 1px solid var(--glass-border); }
+        .roadmap-content { padding: 1.5rem; flex: 1; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        
+        /* ==========================================================================
+           13. FOOTER
+           ========================================================================== */
+        footer { background: #000; padding: 4rem 5% 2rem; border-top: 1px solid #222; position: relative; overflow: hidden; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
+        .footer-col h4 { color: var(--primary-cyan); margin-bottom: 1.5rem; }
+        .footer-col ul { list-style: none; }
+        .footer-col a { color: var(--text-muted); text-decoration: none; transition: var(--transition-fast); display: block; margin-bottom: 0.5rem; }
+        .footer-col a:hover { color: #fff; }
+        .footer-bottom { text-align: center; color: #555; padding-top: 2rem; border-top: 1px solid #111; font-size: 0.9rem; }
+
+        /* ==========================================================================
+           14. ANIMATION CLASSES (Intersection Observer)
+           ========================================================================== */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .fade-in { opacity: 0; transition: opacity 1s ease; }
+        .fade-in.active { opacity: 1; }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3rem; }
+            .timeline::before { left: 20px; }
+            .timeline-item { width: 100%; padding-left: 50px; padding-right: 0; }
+            .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { left: 0; text-align: left; }
+            .timeline-item:nth-child(odd)::after, .timeline-item:nth-child(even)::after { left: 10px; right: auto; }
+            .dash-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; } /* Simplified for single file requirement */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PROGRESS BAR -->
+    <div id="progress-bar"></div>
+
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <a href="#" class="nav-logo">RoboPath <span style="color: var(--primary-cyan)">AI</span></a>
+        <ul class="nav-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#workflow">Workflow</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#innovations">Innovations</a></li>
+            <li><a href="#dashboard">Dashboard</a></li>
+        </ul>
+    </nav>
+
+    <!-- 1. HERO SECTION -->
+    <section class="hero" id="home">
+        <div class="parallax-layer hero-content">
+            <!-- Animated SVG Robot -->
+            <svg class="hero-robot robot-float" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="roboGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#00f0ff;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#0047ff;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <!-- Head -->
+                <rect x="50" y="40" width="100" height="80" rx="20" fill="rgba(255,255,255,0.05)" stroke="url(#roboGrad)" stroke-width="4"/>
+                <!-- Eyes -->
+                <rect class="robot-eye" x="70" y="65" width="20" height="10" rx="5" fill="#00f0ff" />
+                <rect class="robot-eye" x="110" y="65" width="20" height="10" rx="5" fill="#00f0ff" />
+                <!-- Antenna -->
+                <line x1="100" y1="40" x2="100" y2="10" stroke="#8a2be2" stroke-width="4"/>
+                <circle class="robot-pulse" cx="100" cy="10" r="8" fill="#8a2be2"/>
+                <!-- Body Connection -->
+                <rect x="85" y="120" width="30" height="20" fill="#333"/>
+                <!-- Body Chassis -->
+                <path d="M40,140 L160,140 L180,190 L20,190 Z" fill="rgba(255,255,255,0.05)" stroke="url(#roboGrad)" stroke-width="4"/>
+                <!-- LiDAR Unit -->
+                <rect x="75" y="130" width="50" height="10" rx="2" fill="#ef4444"/>
+            </svg>
+            
+            <h1 class="hero-title gradient-text">RoboPath AI</h1>
+            <h2 class="hero-subtitle mono-text" id="typewriter"></h2>
+            <p class="hero-desc">Pioneering zero-collision navigation in high-density dynamic environments through Semantic Perception, Vision-Language Models, and deterministic local planning.</p>
+            
+            <div class="hero-buttons">
+                <a href="#workflow" class="btn btn-primary">Explore Workflow</a>
+                <a href="#architecture" class="btn btn-secondary">System Architecture</a>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator fade-in active">
+            <div class="mouse"><div class="wheel"></div></div>
+            <span class="mono-text" style="font-size:0.7rem">SCROLL TO INITIALIZE</span>
+        </div>
+    </section>
+
+    <!-- 2. PROJECT OVERVIEW -->
+    <section class="container" id="overview">
+        <div class="section-header reveal">
+            <h2>Project Overview</h2>
+            <p>Addressing the fundamental limitations of static reactive planners in highly unpredictable human-centric environments.</p>
+        </div>
+        
+        <div class="grid-3">
+            <div class="glass-card overview-card reveal">
+                <h3><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg> Problem Statement</h3>
+                <p>Modern mobile robots suffer from "Freezing Robot Syndrome" when navigating dense crowds. Standard costmaps treat dynamic humans as static obstacles, causing standard D* Lite and TEB planners to fail or oscillate infinitely.</p>
+            </div>
+            
+            <div class="glass-card overview-card reveal" style="transition-delay: 100ms">
+                <h3><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg> Research Goals</h3>
+                <ul>
+                    <li>Eliminate freezing behavior in dynamic crowds.</li>
+                    <li>Integrate semantic meaning into spatial costmaps.</li>
+                    <li>Achieve deterministic safety using LCB-SLP constraints.</li>
+                    <li>Create self-evaluating datasets (ACDDP).</li>
+                </ul>
+            </div>
+            
+            <div class="glass-card overview-card reveal" style="transition-delay: 200ms">
+                <h3><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg> Expected Outcomes</h3>
+                <p>A production-ready ROS2 architecture capable of autonomous navigation in university campuses and factory floors, backed by a novel algorithmic matrix (SKET) ensuring mechanical longevity.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. COMPLETE PROJECT WORKFLOW -->
+    <section class="container" id="workflow">
+        <div class="section-header reveal">
+            <h2>Complete Project Workflow</h2>
+            <p>An end-to-end breakdown of the engineering pipeline from digital twin creation to autonomous deployment. Click any phase to expand.</p>
+        </div>
+
+        <div class="timeline">
+            <!-- Phase 1 -->
+            <div class="timeline-item reveal" onclick="this.classList.toggle('active')">
+                <div class="timeline-content">
+                    <span class="phase-number">PHASE 01</span>
+                    <h3>Digital Twin Creation</h3>
+                    <p>Physics-accurate simulation modeling.</p>
+                    <div class="timeline-details">
+                        <p><strong>Purpose:</strong> Establish a zero-risk testing environment with realistic physics and sensor noise.</p>
+                        <p><strong>Tools:</strong> Fusion360, Blender, URDF, Xacro, Gazebo Harmonic.</p>
+                        <p><strong>Workflow:</strong> Export CAD from Fusion360 -> Optimize meshes in Blender -> Write Xacro macros for inertias -> Spawn in Gazebo.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2 & 3 Combined for brevity in UI, but showing standard progression -->
+            <div class="timeline-item reveal" onclick="this.classList.toggle('active')">
+                <div class="timeline-content">
+                    <span class="phase-number">PHASE 02 & 03</span>
+                    <h3>Robot Design & Sensors</h3>
+                    <p>Kinematic structuring and perception integration.</p>
+                    <div class="timeline-details">
+                        <p><strong>Inputs:</strong> Environment constraints, payload requirements.</p>
+                        <p><strong>Sensors:</strong> 2D LiDAR (RPLidar A3), RGB-D Camera (Intel RealSense), 9-DOF IMU, High-res Encoders.</p>
+                        <p><strong>Outputs:</strong> Calibrated `robot_state_publisher` and `tf2` tree.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 4 -->
+            <div class="timeline-item reveal" onclick="this.classList.toggle('active')">
+                <div class="timeline-content">
+                    <span class="phase-number">PHASE 04</span>
+                    <h3>ROS2 Communication Setup</h3>
+                    <p>Data routing using DDS middleware.</p>
+                    <div class="timeline-details">
+                        <div><span class="tag">Topics</span> <span class="tag">Services</span> <span class="tag">Actions</span> <span class="tag">Nodes</span></div>
+                        <p><strong>Workflow:</strong> Establish publisher/subscriber networks. <code>/scan</code> (LiDAR), <code>/image_raw</code> (Camera), <code>/odom</code> (Odometry). Implement lifecycle nodes for deterministic startup sequences.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 5 & 6 -->
+            <div class="timeline-item reveal" onclick="this.classList.toggle('active')">
+                <div class="timeline-content">
+                    <span class="phase-number">PHASE 05 & 06</span>
+                    <h3>SLAM & YOLOv8 Object Detection</h3>
+                    <p>Mapping the world and understanding its contents.</p>
+                    <div class="timeline-details">
+                        <p><strong>SLAM:</strong> SLAM Toolbox (synchronous) generates the global static grid map.</p>
+                        <p><strong>YOLOv8:</strong> Runs inference on camera feed. Generates bounding boxes and classifications (Human, Forklift, Box).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 7 & 8 -->
+            <div class="timeline-item reveal" onclick="this.classList.toggle('active')">
+                <div class="timeline-content">
+                    <span class="phase-number">PHASE 07 & 08</span>
+                    <h3>Semantic Costmap & Motion Prediction</h3>
+                    <p>Injecting AI context into classical navigation layers.</p>
+                    <div class="timeline-details">
+                        <p><strong>Algorithm:</strong> Project YOLO 2D bounding boxes into 3D space using depth pointclouds.</p>
+                        <p><strong>Result:</strong> A dynamic costmap layer where a "Human" creates a high-cost inflation radius, while a "Box" creates a static rigid boundary. Motion prediction forecasts human trajectories for the next 2.0 seconds.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 9 & 10 -->
+            <div class="timeline-item reveal" onclick="this.classList.toggle('active')">
+                <div class="timeline-content">
+                    <span class="phase-number">PHASE 09 & 10</span>
+                    <h3>Behavior Tree & D* Lite</h3>
+                    <p>Cognitive decision making and global planning.</p>
+                    <div class="timeline-details">
+                        <p><strong>Behavior Tree:</strong> XML-based logic replacing standard finite state machines. Handles recovery behaviors.</p>
+                        <p><strong>D* Lite:</strong> Calculates the optimal global path from A to B across the static map.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 11 & 12 (INNOVATIONS) -->
+            <div class="timeline-item reveal" onclick="this.classList.toggle('active')">
+                <div class="timeline-content">
+                    <span class="phase-number" style="color:var(--danger)">PHASE 11 & 12 (NOVEL)</span>
+                    <h3>LCB-SLP & SKET Matrix</h3>
+                    <p>Proprietary algorithms for extreme safety.</p>
+                    <div class="timeline-details">
+                        <p><strong>LCB-SLP:</strong> Dynamically reduces <code>v_max</code> based on semantic density (e.g., limits speed to 0.2 m/s if >3 humans are within 2 meters).</p>
+                        <p><strong>SKET Matrix:</strong> Filters Nav2 local trajectories to reject paths requiring high physical jerk, saving actuator gearboxes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 13 to 15 -->
+            <div class="timeline-item reveal" onclick="this.classList.toggle('active')">
+                <div class="timeline-content">
+                    <span class="phase-number">PHASE 13 - 15</span>
+                    <h3>Nav2 Controller & Navigation</h3>
+                    <p>Trajectory execution and goal verification.</p>
+                    <div class="timeline-details">
+                        <p><strong>Controller:</strong> MPPI (Model Predictive Path Integral) or DWB controller generates exact wheel velocities (<code>/cmd_vel</code>).</p>
+                        <p><strong>Destination:</strong> Verifies XY tolerance and Yaw alignment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 16 to 18 -->
+            <div class="timeline-item reveal" onclick="this.classList.toggle('active')">
+                <div class="timeline-content">
+                    <span class="phase-number">PHASE 16 - 18</span>
+                    <h3>VLM, Dashboard & ACDDP Dataset</h3>
+                    <p>Post-mission analysis and continuous learning.</p>
+                    <div class="timeline-details">
+                        <p><strong>VLM Box:</strong> Feeds failure state images to Gemini API to classify *why* navigation failed (e.g., "Door was closed").</p>
+                        <p><strong>ACDDP:</strong> Automatically logs these edge cases into a structured JSON dataset for future model training.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SYSTEM ARCHITECTURE SVG/INTERACTIVE DIAGRAM -->
+    <section class="container" id="architecture">
+        <div class="section-header reveal">
+            <h2>System Architecture</h2>
+            <p>A top-down view of the ROS2 nodes, data flow, and algorithmic layers. Hover over nodes to view technical specs.</p>
+        </div>
+
+        <div class="architecture-container reveal">
+            <div class="arch-layout">
+                <div class="arch-node" data-info="Simulation environment providing physics, lighting, and sensor plugin emulation.">Gazebo Virtual Factory</div>
+                <div class="arch-arrow-down">↓</div>
+                
+                <div class="arch-row">
+                    <div class="arch-node" data-info="Publishes /scan topic at 10Hz. Used for static mapping and localization.">LiDAR Subsystem</div>
+                    <div class="arch-node highlight" data-info="ROS2 Jazzy DDS Middleware backbone handling intra-process zero-copy communication.">ROS2 Core Network</div>
+                    <div class="arch-node" data-info="Publishes /image_raw and /depth. Used for semantic perception.">RGB-D Camera</div>
+                </div>
+                
+                <div class="arch-arrow-down">↓</div>
+                
+                <div class="arch-row">
+                    <div class="arch-node" data-info="Maintains tf2 transforms and generates global static occupancy grid.">SLAM Toolbox</div>
+                    <div class="arch-node" data-info="EKF node fusing Odometry and IMU for robust continuous pose estimation.">Sensor Fusion (EKF)</div>
+                    <div class="arch-node highlight" data-info="TensorRT optimized YOLOv8 running at 30fps detecting humans and dynamic obstacles.">YOLOv8 Inference</div>
+                </div>
+
+                <div class="arch-arrow-down">↓</div>
+                
+                <div class="arch-node highlight" data-info="Custom Nav2 Costmap Layer combining SLAM static map with YOLO dynamic bounding boxes.">Semantic Costmap Layer</div>
+                <div class="arch-arrow-down">↓</div>
+                
+                <div class="arch-row">
+                    <div class="arch-node" data-info="Global planner generating A* / D* Lite paths ignoring dynamic obstacles.">D* Lite Global Planner</div>
+                    <div class="arch-node highlight" data-info="Central decision engine routing logic (e.g., If Human -> Wait, Else -> Replan).">Cognitive Behavior Tree</div>
+                    <div class="arch-node" data-info="Forecasts human positions t+2 seconds into the future to avoid trajectory crossing.">Motion Prediction</div>
+                </div>
+
+                <div class="arch-arrow-down">↓</div>
+                
+                <div class="arch-row">
+                    <div class="arch-node highlight" data-info="Novel algorithm modifying max velocities based on semantic density around the robot.">LCB-SLP Algorithm</div>
+                    <div class="arch-node highlight" data-info="Novel cost matrix filtering out paths that cause high mechanical stress.">SKET Matrix Evaluator</div>
+                </div>
+
+                <div class="arch-arrow-down">↓</div>
+                <div class="arch-node" data-info="Translates approved trajectories into differential drive /cmd_vel commands.">Nav2 MPPI Controller</div>
+                
+                <div class="arch-arrow-down">↓</div>
+                
+                <div class="arch-row">
+                    <div class="arch-node" data-info="React/WebSockets interface displaying telemetry, logs, and live camera feed.">Monitoring Dashboard</div>
+                    <div class="arch-node highlight" data-info="Uses Gemini API to analyze failure states and auto-generates training datasets.">VLM & ACDDP Generation</div>
+                </div>
+            </div>
+
+            <!-- Tooltip Div (Managed by JS) -->
+            <div id="arch-tooltip">
+                <h4 id="tooltip-title">Node Title</h4>
+                <p id="tooltip-desc">Description goes here.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. TECHNOLOGY STACK -->
+    <section class="container" id="tech">
+        <div class="section-header reveal">
+            <h2>Technology Stack</h2>
+            <p>Built exclusively on modern, industry-standard open-source tools.</p>
+        </div>
+        <div class="grid-4">
+            <div class="tech-card reveal"><div class="tech-icon">🐧</div><h4>Ubuntu 24.04</h4><p>Native Linux OS for maximum hardware access.</p></div>
+            <div class="tech-card reveal"><div class="tech-icon">🤖</div><h4>ROS2 Jazzy</h4><p>Next-gen robotics middleware with DDS.</p></div>
+            <div class="tech-card reveal"><div class="tech-icon">🌐</div><h4>Gazebo Harmonic</h4><p>High-fidelity physics simulation.</p></div>
+            <div class="tech-card reveal"><div class="tech-icon">👀</div><h4>YOLOv8</h4><p>State-of-the-art real-time object detection.</p></div>
+            <div class="tech-card reveal"><div class="tech-icon">🗺️</div><h4>SLAM Toolbox</h4><p>Robust 2D mapping and localization.</p></div>
+            <div class="tech-card reveal"><div class="tech-icon">🧠</div><h4>Nav2</h4><p>Professional grade navigation framework.</p></div>
+            <div class="tech-card reveal"><div class="tech-icon">🐍</div><h4>Python & C++</h4><p>Core logic and high-performance nodes.</p></div>
+            <div class="tech-card reveal"><div class="tech-icon">✨</div><h4>Gemini API</h4><p>Multimodal reasoning for the VLM Black Box.</p></div>
+        </div>
+    </section>
+
+    <!-- 6. RESEARCH INNOVATIONS -->
+    <section class="container" id="innovations">
+        <div class="section-header reveal">
+            <h2>Research Innovations</h2>
+            <p>Our core contributions to the field of autonomous mobile robotics.</p>
+        </div>
+
+        <div class="innovation-card reveal">
+            <div class="innovation-content">
+                <span class="badge">Novel Algorithm</span>
+                <h3>LCB-SLP</h3>
+                <p class="mono-text" style="color:var(--primary-cyan); margin-bottom: 1rem;">Local Context-Based Safe Local Planning</p>
+                <p><strong>Problem:</strong> Standard planners drive at full speed until the LiDAR detects an obstacle within the critical radius, causing aggressive braking.</p>
+                <p><strong>Idea:</strong> LCB-SLP reads the Semantic Costmap. If it detects a "Human", it dynamically scales the <code>max_vel_x</code> parameter down proportional to the human's distance, before the LiDAR safety threshold is ever breached.</p>
+                <p><strong>Advantage:</strong> Much smoother human-robot interaction, eliminating the jarring stop-and-go freezing behavior.</p>
+            </div>
+            <div class="innovation-visual">
+                <div class="pulse-ring"></div>
+                <div class="mono-text">v_max = f(distance, semantic_class)</div>
+            </div>
+        </div>
+
+        <div class="innovation-card reveal">
+            <div class="innovation-content">
+                <span class="badge">Novel Algorithm</span>
+                <h3>SKET Matrix</h3>
+                <p class="mono-text" style="color:var(--primary-cyan); margin-bottom: 1rem;">Spatial Kinematic Evaluation Topology</p>
+                <p><strong>Purpose:</strong> A secondary cost critic added to the MPPI controller. While MPPI finds the mathematically shortest path, SKET evaluates the mechanical toll of that path.</p>
+                <p><strong>Workflow:</strong> Evaluates proposed trajectories against the robot's physical jerk limits. It penalizes sharp angular accelerations in narrow spaces.</p>
+                <p><strong>Advantage:</strong> Prolongs motor and gearbox lifespan by 30% without significantly sacrificing navigation speed.</p>
+            </div>
+            <div class="innovation-visual" style="background: repeating-linear-gradient(45deg, #111, #111 10px, #222 10px, #222 20px);">
+                <div class="mono-text" style="background:#000; padding:10px; border:1px solid var(--primary-purple);">Cost = W1*Dist + W2*Jerk + W3*Align</div>
+            </div>
+        </div>
+        
+        <div class="innovation-card reveal">
+            <div class="innovation-content">
+                <span class="badge">Dataset Pipeline</span>
+                <h3>ACDDP Generation</h3>
+                <p class="mono-text" style="color:var(--primary-cyan); margin-bottom: 1rem;">Autonomous Cognitive Data Driven Pipeline</p>
+                <p><strong>Problem:</strong> When robots fail in the real world, developers have to manually dig through ROS bags to find out why.</p>
+                <p><strong>Pipeline:</strong> When Nav2 triggers an abort, a script captures a 360-image + costmap snippet. It sends this to a Vision-Language Model (Gemini) asking "Why did navigation fail?" The VLM responds (e.g., "Blocked by chairs"). This is saved as a structured JSON dataset.</p>
+                <p><strong>Advantage:</strong> Creates a self-annotating dataset of edge-cases for future End-to-End AI training.</p>
+            </div>
+            <div class="innovation-visual" style="border-color: var(--primary-cyan);">
+                <div class="mono-text" style="text-align:left; font-size:0.8rem; color:var(--success);">
+                    {<br>
+                    &nbsp;&nbsp;"timestamp": "169000213.12",<br>
+                    &nbsp;&nbsp;"error": "Planner Failed",<br>
+                    &nbsp;&nbsp;"vlm_analysis": "Path blocked by unstructured human crowd.",<br>
+                    &nbsp;&nbsp;"action_taken": "Recovery Spin"<br>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. BEHAVIOR TREE (Visual Logic) -->
+    <section class="container" id="behavior-tree">
+        <div class="section-header reveal">
+            <h2>Cognitive Behavior Tree</h2>
+            <p>Decision making logic overriding standard costmap reactions.</p>
+        </div>
+        
+        <div class="btree reveal">
+            <div class="btree-node node-danger">Obstacle Detected in Path</div>
+            <div style="height:20px; width:1px; background:var(--text-muted);"></div>
+            <div class="btree-node">YOLO Classification</div>
+            
+            <div class="btree-split">
+                <div class="btree-branch">
+                    <span class="btree-label">Class: Human</span>
+                    <div class="btree-node">Engage LCB-SLP (Slow down)</div>
+                    <div style="height:20px; width:1px; background:var(--text-muted);"></div>
+                    <div class="btree-node">Predict Motion Vector</div>
+                    <div class="btree-split" style="padding-top:10px;">
+                        <div class="btree-branch" style="gap:10px;">
+                            <span class="btree-label">Safe</span>
+                            <div class="btree-node node-success">Continue Path</div>
+                        </div>
+                        <div class="btree-branch" style="gap:10px;">
+                            <span class="btree-label">Collision Course</span>
+                            <div class="btree-node node-danger">Wait / Yield</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btree-branch">
+                    <span class="btree-label">Class: Static Object</span>
+                    <div class="btree-node">Update Static Costmap</div>
+                    <div style="height:20px; width:1px; background:var(--text-muted);"></div>
+                    <div class="btree-node">Trigger D* Lite Replan</div>
+                    <div class="btree-split" style="padding-top:10px;">
+                        <div class="btree-branch" style="gap:10px;">
+                            <span class="btree-label">Path Found</span>
+                            <div class="btree-node node-success">Execute New Path</div>
+                        </div>
+                        <div class="btree-branch" style="gap:10px;">
+                            <span class="btree-label">Blocked</span>
+                            <div class="btree-node node-danger">Emergency Stop & ACDDP Log</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. DASHBOARD PREVIEW -->
+    <section class="container" id="dashboard">
+        <div class="section-header reveal">
+            <h2>Operations Dashboard Preview</h2>
+            <p>Live telemetry and semantic state visualization interface.</p>
+        </div>
+        
+        <div class="dashboard-ui reveal">
+            <div class="dash-header">
+                <div>RoboPath Central Commander</div>
+                <div class="dash-status"><div class="dash-dot"></div> SYS ONLINE</div>
+            </div>
+            <div class="dash-grid">
+                <!-- Main Feed -->
+                <div class="dash-panel" style="grid-column: 1 / 2;">
+                    <div class="panel-title">RGB-D Semantic Feed (YOLOv8)</div>
+                    <div class="cam-feed">
+                        <div class="bbox">
+                            <div class="bbox-label">Human [98%]</div>
+                        </div>
+                        <div class="bbox" style="top:50%; left:70%; width:15%; height:30%; border-color:var(--primary-cyan);">
+                            <div class="bbox-label" style="background:var(--primary-cyan);">Box [85%]</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar Stats -->
+                <div class="dash-panel" style="grid-column: 2 / 3;">
+                    <div class="panel-title">Telemetry</div>
+                    <div class="stat-row"><span>Velocity (x)</span> <span class="stat-val">0.45 m/s (LCB Restricted)</span></div>
+                    <div class="stat-row"><span>Battery</span> <span class="stat-val" style="color:var(--success);">88%</span></div>
+                    <div class="stat-row"><span>CPU Temp</span> <span class="stat-val">58°C</span></div>
+                    <div class="stat-row"><span>State</span> <span class="stat-val" style="color:var(--warning);">Yielding to Human</span></div>
+                    
+                    <div class="panel-title" style="margin-top:20px;">SLAM Global Map</div>
+                    <div class="map-view">
+                        <div class="map-grid"></div>
+                        <div class="robot-marker"></div>
+                        <div class="path-line"></div>
+                    </div>
+                </div>
+                
+                <!-- Bottom Logs -->
+                <div class="dash-panel" style="grid-column: 1 / 3;">
+                    <div class="panel-title">System Logs (ROS2 /rosout)</div>
+                    <div class="log-window">
+                        <div class="log-entry log-info">[INFO] [nav2_bt_navigator]: Goal received, generating path.</div>
+                        <div class="log-entry log-info">[INFO] [yolo_node]: Dynamic obstacle identified (Human, conf=0.98).</div>
+                        <div class="log-entry log-warn">[WARN] [lcb_slp_controller]: Distance threshold breached (1.8m). Reducing v_max to 0.45m/s.</div>
+                        <div class="log-entry log-info">[INFO] [sket_matrix]: Trajectory evaluated. Cost: 45.2. Executing.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. IMPLEMENTATION ROADMAP -->
+    <section class="container" id="roadmap">
+        <div class="section-header reveal">
+            <h2>Implementation Roadmap</h2>
+        </div>
+        <div class="roadmap-container">
+            <div class="roadmap-item reveal"><div class="roadmap-week">WEEK 1</div><div class="roadmap-content"><span class="tag">Ubuntu</span><span class="tag">ROS2</span><span class="tag">Gazebo</span><span class="tag">URDF</span> | Digital Twin creation and physics tuning.</div></div>
+            <div class="roadmap-item reveal"><div class="roadmap-week">WEEK 2</div><div class="roadmap-content"><span class="tag">Sensors</span><span class="tag">SLAM Toolbox</span><span class="tag">RViz</span> | Sensor fusion and static map generation.</div></div>
+            <div class="roadmap-item reveal"><div class="roadmap-week">WEEK 3</div><div class="roadmap-content"><span class="tag">YOLOv8</span><span class="tag">Behavior Tree</span><span class="tag">Semantic Costmap</span> | Integrating AI vision with ROS2 costmaps.</div></div>
+            <div class="roadmap-item reveal"><div class="roadmap-week">WEEK 4</div><div class="roadmap-content"><span class="tag">Nav2</span><span class="tag">LCB-SLP</span><span class="tag">SKET Matrix</span> | Writing custom controller plugins for safety.</div></div>
+            <div class="roadmap-item reveal"><div class="roadmap-week">WEEK 5</div><div class="roadmap-content"><span class="tag">Dashboard</span><span class="tag">VLM API</span><span class="tag">ACDDP</span> | Telemetry UI and automated failure-logging pipeline.</div></div>
+            <div class="roadmap-item reveal"><div class="roadmap-week">WEEK 6</div><div class="roadmap-content"><span class="tag">Testing</span><span class="tag">Optimization</span> | Hardware deployment and research paper drafting.</div></div>
+        </div>
+    </section>
+
+    <!-- 11 & 12. SUMMARY & FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid reveal">
+                <div class="footer-col">
+                    <h4>RoboPath AI</h4>
+                    <p class="mono-text" style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">Cognitive Autonomous Mobile Robot for Safe Intelligent Navigation</p>
+                    <a href="#" class="btn btn-primary" style="font-size:0.8rem; padding:0.5rem 1rem;">View on GitHub</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Research Impact</h4>
+                    <ul>
+                        <li><a href="#">Elimination of Freezing Robot Syndrome</a></li>
+                        <li><a href="#">Semantic vs Spatial Planning</a></li>
+                        <li><a href="#">Self-annotating Edge Case Datasets</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Affiliations</h4>
+                    <ul>
+                        <li><a href="#">DIPEX Engineering Exhibition</a></li>
+                        <li><a href="#">IIT Innovation Cell</a></li>
+                        <li><a href="#">Robotics Research Lab</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 RoboPath AI Research Project. Engineered for the future.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+         JAVASCRIPT
+         ========================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Scroll Progress Bar
+            const progressBar = document.getElementById('progress-bar');
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.width = scrolled + '%';
+            });
+
+            // 2. Intersection Observer for scroll animations (.reveal classes)
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            
+            const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Run once
+                });
+            }, revealOptions);
+
+            revealElements.forEach(el => revealOnScroll.observe(el));
+
+            // 3. Typing Effect for Hero Subtitle
+            const textToType = "Cognitive Autonomous Mobile Robot for Safe Intelligent Navigation.";
+            const typeTarget = document.getElementById('typewriter');
+            let typeIndex = 0;
+            
+            function typeWriter() {
+                if (typeIndex < textToType.length) {
+                    typeTarget.innerHTML += textToType.charAt(typeIndex);
+                    typeIndex++;
+                    setTimeout(typeWriter, 50); // Typing speed
+                } else {
+                    // Add blinking cursor
+                    typeTarget.innerHTML += '<span style="animation: blink 1s infinite">_</span>';
+                }
+            }
+            setTimeout(typeWriter, 1000); // Delay start
+
+            // 4. Mouse Parallax for Hero Section
+            const hero = document.querySelector('.hero');
+            const parallaxLayer = document.querySelector('.parallax-layer');
+            
+            hero.addEventListener('mousemove', (e) => {
+                const x = (window.innerWidth - e.pageX * 2) / 90;
+                const y = (window.innerHeight - e.pageY * 2) / 90;
+                parallaxLayer.style.transform = `translateX(${x}px) translateY(${y}px)`;
+            });
+            hero.addEventListener('mouseleave', () => {
+                parallaxLayer.style.transform = `translateX(0px) translateY(0px)`;
+                parallaxLayer.style.transition = 'transform 0.5s ease';
+            });
+            hero.addEventListener('mouseenter', () => {
+                parallaxLayer.style.transition = 'none';
+            });
+
+            // 5. Architecture Diagram Interactive Tooltips
+            const archNodes = document.querySelectorAll('.arch-node');
+            const tooltip = document.getElementById('arch-tooltip');
+            const tooltipTitle = document.getElementById('tooltip-title');
+            const tooltipDesc = document.getElementById('tooltip-desc');
+            const archContainer = document.querySelector('.architecture-container');
+
+            archNodes.forEach(node => {
+                node.addEventListener('mouseenter', (e) => {
+                    const info = node.getAttribute('data-info');
+                    const title = node.innerText;
+                    
+                    tooltipTitle.innerText = title;
+                    tooltipDesc.innerText = info;
+                    
+                    // Positioning relative to container
+                    const containerRect = archContainer.getBoundingClientRect();
+                    const nodeRect = node.getBoundingClientRect();
+                    
+                    tooltip.style.opacity = '1';
+                    
+                    let leftPos = nodeRect.left - containerRect.left + (nodeRect.width / 2) - 150; // center tooltip
+                    let topPos = nodeRect.top - containerRect.top + nodeRect.height + 15;
+                    
+                    // Bound checks
+                    if (leftPos < 10) leftPos = 10;
+                    if (leftPos + 300 > containerRect.width) leftPos = containerRect.width - 310;
+                    
+                    tooltip.style.left = `${leftPos}px`;
+                    tooltip.style.top = `${topPos}px`;
+                });
+                
+                node.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

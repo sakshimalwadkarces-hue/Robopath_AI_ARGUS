@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<robot name="argus_robot">
+
+  <!-- ================================================================= -->
+  <!-- MATERIALS & PALETTE                                               -->
+  <!-- ================================================================= -->
+  <material name="metallic_dark_grey"><color rgba="0.12 0.14 0.16 1.0"/></material>
+  <material name="metallic_silver"><color rgba="0.75 0.78 0.80 1.0"/></material>
+  <material name="accent_blue"><color rgba="0.0 0.45 0.85 1.0"/></material>
+  <material name="rubber_black"><color rgba="0.05 0.05 0.05 1.0"/></material>
+  <material name="lens_glass"><color rgba="0.1 0.8 0.9 0.8"/></material>
+
+  <!-- ================================================================= -->
+  <!-- MAIN CHASSIS                                                      -->
+  <!-- ================================================================= -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.08" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.65 0.45 0.18"/>
+      </geometry>
+      <material name="metallic_dark_grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.08" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.65 0.45 0.18"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="20.0"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.7" iyz="0.0" izz="0.9"/>
+    </inertial>
+  </link>
+  <gazebo reference="base_link">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <!-- Top Accent Cover plate -->
+  <link name="top_plate">
+    <visual>
+      <geometry><box size="0.55 0.38 0.02"/></geometry>
+      <material name="accent_blue"/>
+    </visual>
+  </link>
+  <joint name="top_plate_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="top_plate"/>
+    <origin xyz="0 0 0.18" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ================================================================= -->
+  <!-- 4 WHEELS (FRONT & REAR)                                           -->
+  <!-- ================================================================= -->
+  <!-- Front Left Wheel -->
+  <link name="front_left_wheel">
+    <visual>
+      <geometry><cylinder radius="0.10" length="0.06"/></geometry>
+      <material name="rubber_black"/>
+    </visual>
+    <collision><geometry><cylinder radius="0.10" length="0.06"/></geometry></collision>
+    <inertial><mass value="2.0"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <joint name="front_left_wheel_joint" type="continuous">
+    <parent link="base_link"/><child link="front_left_wheel"/>
+    <origin xyz="0.22 0.26 0.02" rpy="-1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- Front Right Wheel -->
+  <link name="front_right_wheel">
+    <visual>
+      <geometry><cylinder radius="0.10" length="0.06"/></geometry>
+      <material name="rubber_black"/>
+    </visual>
+    <collision><geometry><cylinder radius="0.10" length="0.06"/></geometry></collision>
+    <inertial><mass value="2.0"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <joint name="front_right_wheel_joint" type="continuous">
+    <parent link="base_link"/><child link="front_right_wheel"/>
+    <origin xyz="0.22 -0.26 0.02" rpy="-1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- Rear Left Wheel -->
+  <link name="rear_left_wheel">
+    <visual>
+      <geometry><cylinder radius="0.10" length="0.06"/></geometry>
+      <material name="rubber_black"/>
+    </visual>
+    <collision><geometry><cylinder radius="0.10" length="0.06"/></geometry></collision>
+    <inertial><mass value="2.0"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <joint name="rear_left_wheel_joint" type="continuous">
+    <parent link="base_link"/><child link="rear_left_wheel"/>
+    <origin xyz="-0.22 0.26 0.02" rpy="-1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- Rear Right Wheel -->
+  <link name="rear_right_wheel">
+    <visual>
+      <geometry><cylinder radius="0.10" length="0.06"/></geometry>
+      <material name="rubber_black"/>
+    </visual>
+    <collision><geometry><cylinder radius="0.10" length="0.06"/></geometry></collision>
+    <inertial><mass value="2.0"/><inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/></inertial>
+  </link>
+  <joint name="rear_right_wheel_joint" type="continuous">
+    <parent link="base_link"/><child link="rear_right_wheel"/>
+    <origin xyz="-0.22 -0.26 0.02" rpy="-1.5708 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <!-- ================================================================= -->
+  <!-- SENSORS: HEAD LIDAR & FRONT CAMERA                                -->
+  <!-- ================================================================= -->
+  <!-- Head Mount / Tower -->
+  <link name="sensor_tower">
+    <visual>
+      <geometry><cylinder radius="0.04" length="0.12"/></geometry>
+      <material name="metallic_silver"/>
+    </visual>
+  </link>
+  <joint name="sensor_tower_joint" type="fixed">
+    <parent link="base_link"/><child link="sensor_tower"/>
+    <origin xyz="0.15 0 0.25" rpy="0 0 0"/>
+  </joint>
+
+  <!-- 360 Head LiDAR -->
+  <link name="laser_frame">
+    <visual>
+      <geometry><cylinder radius="0.06" length="0.05"/></geometry>
+      <material name="rubber_black"/>
+    </visual>
+  </link>
+  <joint name="laser_joint" type="fixed">
+    <parent link="sensor_tower"/><child link="laser_frame"/>
+    <origin xyz="0 0 0.08" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Front Camera physical Link -->
+  <link name="camera_link">
+    <visual>
+      <geometry><box size="0.03 0.12 0.035"/></geometry>
+      <material name="metallic_silver"/>
+    </visual>
+  </link>
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/><child link="camera_link"/>
+    <origin xyz="0.33 0 0.12" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Camera Optical Link & Joint (Required for Computer Vision / Depth alignment) -->
+  <link name="camera_link_optical"/>
+  <joint name="camera_optical_joint" type="fixed">
+    <parent link="camera_link"/>
+    <child link="camera_link_optical"/>
+    <origin xyz="0 0 0" rpy="-1.5708 0 -1.5708"/>
+  </joint>
+
+  <!-- ================================================================= -->
+  <!-- GAZEBO DIFFERENTIAL DRIVE PLUGIN (THE ENGINE)                     -->
+  <!-- ================================================================= -->
+  <gazebo>
+    <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <update_rate>50.0</update_rate>
+      
+      <!-- Wheel Joints -->
+      <left_joint>front_left_wheel_joint</left_joint>
+      <right_joint>front_right_wheel_joint</right_joint>
+      
+      <!-- Kinematics -->
+      <wheel_separation>0.52</wheel_separation>
+      <wheel_diameter>0.20</wheel_diameter>
+      
+      <!-- Limits -->
+      <max_wheel_torque>20.0</max_wheel_torque>
+      <max_wheel_acceleration>1.0</max_wheel_acceleration>
+      
+      <!-- Output -->
+      <command_topic>cmd_vel</command_topic>
+      <odometry_topic>odom</odometry_topic>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+      <publish_wheel_tf>true</publish_wheel_tf>
+    </plugin>
+  </gazebo>
+
+  <!-- ================================================================= -->
+  <!-- GAZEBO LIDAR PLUGIN (THE EYES)                                    -->
+  <!-- ================================================================= -->
+  <gazebo reference="laser_frame">
+    <sensor name="lidar" type="ray">
+      <always_on>true</always_on>
+      <visualize>true</visualize> 
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1.0</resolution>
+            <min_angle>0.0</min_angle>
+            <max_angle>6.28319</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.12</min>
+          <max>40.0</max>
+          <resolution>0.015</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+      <plugin name="scan" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <remapping>~/out:=scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>laser_frame</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- ================================================================= -->
+  <!-- GAZEBO RGB-D CAMERA PLUGIN                                        -->
+  <!-- ================================================================= -->
+  <gazebo reference="camera_link">
+    <sensor type="depth" name="camera_sensor">
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>30.0</update_rate>
+      <camera>
+        <horizontal_fov>1.089</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>8.0</far>
+        </clip>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <ros>
+          <namespace>camera</namespace>
+          <remapping>image_raw:=image_raw</remapping>
+          <remapping>depth/image_raw:=depth/image_raw</remapping>
+          <remapping>camera_info:=camera_info</remapping>
+        </ros>
+        <camera_name>camera</camera_name>
+        <frame_name>camera_link_optical</frame_name>
+        <min_depth>0.05</min_depth>
+        <max_depth>8.0</max_depth>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- ================================================================= -->
+  <!-- GAZEBO IMU SENSOR (THE INNER EAR)                                 -->
+  <!-- ================================================================= -->
+  <gazebo reference="base_link">
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+        <ros>
+          <remapping>~/out:=imu</remapping>
+        </ros>
+        <initial_orientation_as_reference>false</initial_orientation_as_reference>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>
